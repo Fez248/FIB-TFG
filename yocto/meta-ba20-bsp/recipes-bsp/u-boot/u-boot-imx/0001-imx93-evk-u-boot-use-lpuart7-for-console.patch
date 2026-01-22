@@ -1,0 +1,166 @@
+From 53ab89ffefd496f57151a6d4b8bab34e18dd286c Mon Sep 17 00:00:00 2001
+From: Kas User <kas@example.com>
+Date: Wed, 10 Dec 2025 12:11:44 +0100
+Subject: [PATCH] imx93 evk u boot use lpuart7 for console
+
+---
+ .../arm/dts/imx93-11x11-evk-pmic-pf0900-u-boot.dtsi |  4 ++--
+ arch/arm/dts/imx93-11x11-evk-u-boot.dtsi            |  4 ++--
+ arch/arm/dts/imx93-11x11-evk.dts                    | 13 -------------
+ arch/arm/dts/imx93.dtsi                             |  4 ++--
+ arch/arm/mach-imx/imx9/native/clock.c               |  7 ++++++-
+ board/freescale/imx93_evk/imx93_evk.c               |  5 +++--
+ include/configs/imx93_evk.h                         |  2 +-
+ 7 files changed, 16 insertions(+), 23 deletions(-)
+
+diff --git a/arch/arm/dts/imx93-11x11-evk-pmic-pf0900-u-boot.dtsi b/arch/arm/dts/imx93-11x11-evk-pmic-pf0900-u-boot.dtsi
+index a9215f4f5d5..e19271bb669 100644
+--- a/arch/arm/dts/imx93-11x11-evk-pmic-pf0900-u-boot.dtsi
++++ b/arch/arm/dts/imx93-11x11-evk-pmic-pf0900-u-boot.dtsi
+@@ -82,7 +82,7 @@
+ 	bootph-pre-ram;
+ };
+ 
+-&pinctrl_uart1 {
++&pinctrl_uart7 {
+ 	bootph-pre-ram;
+ 	bootph-some-ram;
+ };
+@@ -119,7 +119,7 @@
+ 	bootph-some-ram;
+ };
+ 
+-&lpuart1 {
++&lpuart7 {
+ 	bootph-pre-ram;
+ 	bootph-some-ram;
+ };
+diff --git a/arch/arm/dts/imx93-11x11-evk-u-boot.dtsi b/arch/arm/dts/imx93-11x11-evk-u-boot.dtsi
+index 67caed023f2..0ce4bfecf77 100644
+--- a/arch/arm/dts/imx93-11x11-evk-u-boot.dtsi
++++ b/arch/arm/dts/imx93-11x11-evk-u-boot.dtsi
+@@ -82,7 +82,7 @@
+ 	bootph-pre-ram;
+ };
+ 
+-&pinctrl_uart1 {
++&pinctrl_uart7 {
+ 	bootph-pre-ram;
+ 	bootph-some-ram;
+ };
+@@ -119,7 +119,7 @@
+ 	bootph-some-ram;
+ };
+ 
+-&lpuart1 {
++&lpuart7 {
+ 	bootph-pre-ram;
+ 	bootph-some-ram;
+ };
+diff --git a/arch/arm/dts/imx93-11x11-evk.dts b/arch/arm/dts/imx93-11x11-evk.dts
+index fdc5d94cc35..dff1ff52f7d 100644
+--- a/arch/arm/dts/imx93-11x11-evk.dts
++++ b/arch/arm/dts/imx93-11x11-evk.dts
+@@ -378,12 +378,6 @@
+ 	};
+ };
+ 
+-&lpuart1 { /* console */
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart1>;
+-	status = "okay";
+-};
+-
+ &lpuart7 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_uart7>;
+@@ -555,13 +549,6 @@
+ 		>;
+ 	};
+ 
+-	pinctrl_uart1: uart1grp {
+-		fsl,pins = <
+-			MX93_PAD_UART1_RXD__LPUART1_RX			0x31e
+-			MX93_PAD_UART1_TXD__LPUART1_TX			0x31e
+-		>;
+-	};
+-
+ 	pinctrl_uart7: uart7grp {
+ 		fsl,pins = <
+ 			MX93_PAD_GPIO_IO08__LPUART7_TX			0x31e
+diff --git a/arch/arm/dts/imx93.dtsi b/arch/arm/dts/imx93.dtsi
+index 16d2c8c0ad4..89f2cc2b5de 100644
+--- a/arch/arm/dts/imx93.dtsi
++++ b/arch/arm/dts/imx93.dtsi
+@@ -948,8 +948,8 @@
+ 				compatible = "fsl,imx93-lpuart", "fsl,imx8ulp-lpuart", "fsl,imx7ulp-lpuart";
+ 				reg = <0x42690000 0x1000>;
+ 				interrupts = <GIC_SPI 210 IRQ_TYPE_LEVEL_HIGH>;
+-				clocks = <&clk IMX93_CLK_LPUART7_GATE>;
+-				clock-names = "ipg";
++				clocks = <&clk IMX93_CLK_LPUART7_GATE>, <&clk IMX93_CLK_LPUART7_GATE>;
++				clock-names = "ipg", "per";
+ 				status = "disabled";
+ 			};
+ 
+diff --git a/arch/arm/mach-imx/imx9/native/clock.c b/arch/arm/mach-imx/imx9/native/clock.c
+index 7f17b34a0d1..d448ef315bf 100644
+--- a/arch/arm/mach-imx/imx9/native/clock.c
++++ b/arch/arm/mach-imx/imx9/native/clock.c
+@@ -551,7 +551,7 @@ unsigned int mxc_get_clock(enum mxc_clock clk)
+ 	case MXC_ESDHC3_CLK:
+ 		return ccm_clk_root_get_rate(USDHC3_CLK_ROOT);
+ 	case MXC_UART_CLK:
+-		return ccm_clk_root_get_rate(LPUART1_CLK_ROOT);
++		return ccm_clk_root_get_rate(LPUART7_CLK_ROOT);
+ 	case MXC_FLEXSPI_CLK:
+ 		return ccm_clk_root_get_rate(FLEXSPI1_CLK_ROOT);
+ 	default:
+@@ -600,6 +600,11 @@ void init_uart_clk(u32 index)
+ 		ccm_clk_root_cfg(LPUART1_CLK_ROOT, OSC_24M_CLK, 1);
+ 		ccm_lpcg_on(CCGR_URT1, true);
+ 		break;
++	case LPUART7_CLK_ROOT:
++		ccm_lpcg_on(CCGR_URT7, false);
++		ccm_clk_root_cfg(LPUART7_CLK_ROOT, OSC_24M_CLK, 1);
++		ccm_lpcg_on(CCGR_URT7, true);
++		break;
+ 	default:
+ 		break;
+ 	}
+diff --git a/board/freescale/imx93_evk/imx93_evk.c b/board/freescale/imx93_evk/imx93_evk.c
+index 105e4d585e3..1e2fcaca608 100644
+--- a/board/freescale/imx93_evk/imx93_evk.c
++++ b/board/freescale/imx93_evk/imx93_evk.c
+@@ -28,8 +28,8 @@ DECLARE_GLOBAL_DATA_PTR;
+ #define WDOG_PAD_CTRL	(PAD_CTL_DSE(6) | PAD_CTL_ODE | PAD_CTL_PUE | PAD_CTL_PE)
+ 
+ static iomux_v3_cfg_t const uart_pads[] = {
+-	MX93_PAD_UART1_RXD__LPUART1_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
+-	MX93_PAD_UART1_TXD__LPUART1_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
++	MX93_PAD_GPIO_IO09__LPUART7_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
++	MX93_PAD_GPIO_IO08__LPUART7_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
+ };
+ 
+ #if CONFIG_IS_ENABLED(EFI_HAVE_CAPSULE_SUPPORT)
+@@ -56,6 +56,7 @@ struct efi_capsule_update_info update_info = {
+ int board_early_init_f(void)
+ {
+ 	imx_iomux_v3_setup_multiple_pads(uart_pads, ARRAY_SIZE(uart_pads));
++	init_uart_clk(LPUART7_CLK_ROOT);
+ 
+ 	return 0;
+ }
+diff --git a/include/configs/imx93_evk.h b/include/configs/imx93_evk.h
+index 3bdaccfb8da..589b8bdd626 100644
+--- a/include/configs/imx93_evk.h
++++ b/include/configs/imx93_evk.h
+@@ -69,7 +69,7 @@
+ 	"kernel_addr_r=" __stringify(CONFIG_SYS_LOAD_ADDR) "\0" \
+ 	"image=Image\0" \
+ 	"splashimage=0x90000000\0" \
+-	"console=ttyLP0,115200 earlycon\0" \
++	"console=ttyLP6,115200 earlycon\0" \
+ 	"fdt_addr_r=0x83000000\0"			\
+ 	"fdt_addr=0x83000000\0"			\
+ 	"fdt_high=0xffffffffffffffff\0"		\
