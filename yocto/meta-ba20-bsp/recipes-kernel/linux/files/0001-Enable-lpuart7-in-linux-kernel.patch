@@ -1,0 +1,72 @@
+From 5c94c8db0b7cde4796fc88833e0a50395e3c4d40 Mon Sep 17 00:00:00 2001
+From: Kas User <kas@example.com>
+Date: Thu, 22 Jan 2026 17:24:07 +0100
+Subject: [PATCH] Enable lpuart7 in linux kernel
+
+---
+ .../freescale/imx93-11x11-evk-i2c-spi-slave.dts   |  4 ++--
+ arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts | 15 ++++++++++++++-
+ 2 files changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-i2c-spi-slave.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-i2c-spi-slave.dts
+index f123a05b1585..1d582a96aaf3 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-i2c-spi-slave.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-i2c-spi-slave.dts
+@@ -26,7 +26,7 @@ &flexcan2 {
+ };
+ 
+ &lpuart7 {
+-	status = "disabled";
++	status = "okay";
+ };
+ 
+ &sai3 {
+@@ -73,7 +73,7 @@ &lpspi3 {
+ 	pinctrl-1 = <&pinctrl_lpspi3>;
+ 	cs-gpios = <&gpio2 8 GPIO_ACTIVE_LOW>;
+ 	pinctrl-assert-gpios = <&adp5585gpio 4 GPIO_ACTIVE_HIGH>;
+-	status = "okay";
++	status = "disabled";
+ 
+ 	spidev0: spi@0 {
+ 		reg = <0>;
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+index 4d1aa281f33e..17950545ad59 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+@@ -17,7 +17,7 @@ / {
+ 	compatible = "fsl,imx93-11x11-evk", "fsl,imx93";
+ 
+ 	chosen {
+-		stdout-path = &lpuart1;
++		stdout-path = &lpuart7;
+ 	};
+ 
+ 	reserved-memory {
+@@ -715,6 +715,12 @@ &lpuart1 { /* console */
+ 	status = "okay";
+ };
+ 
++&lpuart7 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart7>;
++	status = "okay";
++};
++
+ &lpuart5 {
+ 	/* BT */
+ 	pinctrl-names = "default";
+@@ -943,6 +949,13 @@ MX93_PAD_UART1_TXD__LPUART1_TX			0x31e
+ 		>;
+ 	};
+ 
++	pinctrl_uart7: uart7grp {
++		fsl,pins = <
++			MX93_PAD_GPIO_IO08__LPUART7_TX			0x31
++			MX93_PAD_GPIO_IO09__LPUART7_RX			0x31
++		>;
++	};
++
+ 	pinctrl_uart5: uart5grp {
+ 		fsl,pins = <
+ 			MX93_PAD_DAP_TDO_TRACESWO__LPUART5_TX	0x31e

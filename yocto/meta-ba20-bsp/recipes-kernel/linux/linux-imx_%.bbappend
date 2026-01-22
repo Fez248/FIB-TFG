@@ -6,5 +6,6 @@ SRC_URI += "file://0001-Add-support-for-ETML1010E6DHU-LVDS-display.patch \
             file://0002-Add-EDT-panel-dts-file-for-imx93evk.patch \
             file://0003-Add-touchscreen-driver.patch \
             file://0001-Port-display-to-BA20-no-brightness.patch \
+            file://0001-Enable-lpuart7-in-linux-kernel.patch \
             "
 
