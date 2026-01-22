@@ -1,0 +1,24 @@
+From 043f625b510f6be41d11f111f8859e7da4e0ca0b Mon Sep 17 00:00:00 2001
+From: Kas User <kas@example.com>
+Date: Mon, 5 Jan 2026 20:20:21 +0100
+Subject: [PATCH] Remove leftover from adp5585_isp
+
+---
+ arch/arm64/boot/dts/freescale/imx93-11x11-evk-mt9m114.dts | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-mt9m114.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-mt9m114.dts
+index f0b3c57451a6..14e78a22639b 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-mt9m114.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-mt9m114.dts
+@@ -177,10 +177,6 @@ mt9m114_ep: endpoint {
+ 	};
+ };
+ 
+-&adp5585_isp {
+-	status = "disabled";
+-};
+-
+ &ap1302 {
+ 	status = "disabled";
+ };

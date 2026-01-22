@@ -1,0 +1,140 @@
+From 682b23309a8a0b16aca153ea483ed8dd023a9a98 Mon Sep 17 00:00:00 2001
+From: Kas User <kas@example.com>
+Date: Mon, 5 Jan 2026 17:52:20 +0100
+Subject: [PATCH] Remove leftovers of gpio expander
+
+---
+ .../dts/freescale/imx93-11x11-evk-aud-hat.dts |  1 -
+ .../imx93-11x11-evk-boe-wxga-lvds-panel.dts   | 34 -------------------
+ .../imx93-11x11-evk-i2c-spi-slave.dts         |  1 -
+ .../freescale/imx93-11x11-evk-iw612-otbr.dts  |  1 -
+ .../dts/freescale/imx93-11x11-evk-mqs.dts     |  1 -
+ .../dts/freescale/imx93-11x11-evk-mt9m114.dts |  1 -
+ .../dts/freescale/imx93-11x11-evk-rm67199.dts |  2 --
+ 7 files changed, 41 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-aud-hat.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-aud-hat.dts
+index d9e0e361cdb4..8c56b5761f1c 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-aud-hat.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-aud-hat.dts
+@@ -98,7 +98,6 @@ reg_audio_switch1: regulator-audio-switch1 {
+ 		regulator-name = "audio-switch1";
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
+-		gpio = <&adp5585gpio 4 GPIO_ACTIVE_HIGH>;
+ 		enable-active-high;
+ 		regulator-always-on;
+ 	};
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-boe-wxga-lvds-panel.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-boe-wxga-lvds-panel.dts
+index 5fcc840f365e..b95732e0477f 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-boe-wxga-lvds-panel.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-boe-wxga-lvds-panel.dts
+@@ -5,40 +5,6 @@
+ 
+ #include "imx93-11x11-evk.dts"
+ 
+-/ {
+-	lvds_backlight: lvds_backlight {
+-		compatible = "pwm-backlight";
+-		pwms = <&adp5585pwm 0 100000 0>;
+-		enable-gpios = <&adp5585gpio 8 GPIO_ACTIVE_HIGH>;
+-		power-supply = <&reg_vdd_12v>;
+-		status = "okay";
+-
+-		brightness-levels = < 0  1  2  3  4  5  6  7  8  9
+-				     10 11 12 13 14 15 16 17 18 19
+-				     20 21 22 23 24 25 26 27 28 29
+-				     30 31 32 33 34 35 36 37 38 39
+-				     40 41 42 43 44 45 46 47 48 49
+-				     50 51 52 53 54 55 56 57 58 59
+-				     60 61 62 63 64 65 66 67 68 69
+-				     70 71 72 73 74 75 76 77 78 79
+-				     80 81 82 83 84 85 86 87 88 89
+-				     90 91 92 93 94 95 96 97 98 99
+-				    100>;
+-		default-brightness-level = <80>;
+-	};
+-
+-	lvds_panel {
+-		compatible = "boe,ev121wxm-n10-1850";
+-		backlight = <&lvds_backlight>;
+-
+-		port {
+-			panel_lvds_in: endpoint {
+-				remote-endpoint = <&lvds_out>;
+-			};
+-		};
+-	};
+-};
+-
+ &adv7535 {
+ 	status = "disabled";
+ };
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-i2c-spi-slave.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-i2c-spi-slave.dts
+index f123a05b1585..b4faac0b0b1b 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-i2c-spi-slave.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-i2c-spi-slave.dts
+@@ -72,7 +72,6 @@ &lpspi3 {
+ 	pinctrl-0 = <&pinctrl_lpspi3>;
+ 	pinctrl-1 = <&pinctrl_lpspi3>;
+ 	cs-gpios = <&gpio2 8 GPIO_ACTIVE_LOW>;
+-	pinctrl-assert-gpios = <&adp5585gpio 4 GPIO_ACTIVE_HIGH>;
+ 	status = "okay";
+ 
+ 	spidev0: spi@0 {
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-iw612-otbr.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-iw612-otbr.dts
+index f0ff611d8de3..54b0f9cf7562 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-iw612-otbr.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-iw612-otbr.dts
+@@ -28,7 +28,6 @@ &lpspi3 {
+ 	pinctrl-0 = <&pinctrl_lpspi3>;
+ 	pinctrl-1 = <&pinctrl_lpspi3>;
+ 	cs-gpios = <&gpio2 8 GPIO_ACTIVE_LOW>;
+-	pinctrl-assert-gpios = <&adp5585gpio 4 GPIO_ACTIVE_LOW>;
+ 	pinctrl-assert-gpios = <&pcal6408 0 GPIO_ACTIVE_HIGH>;
+ 	status = "okay";
+ 
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-mqs.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-mqs.dts
+index 41f0c3156eed..77566f3b55b1 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-mqs.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-mqs.dts
+@@ -11,7 +11,6 @@ reg_audio_switch: regulator-audio-switch {
+ 		regulator-name = "audio-switch";
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
+-		gpio = <&adp5585gpio 2 GPIO_ACTIVE_HIGH>;
+ 		enable-active-high;
+ 		regulator-always-on;
+ 	};
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-mt9m114.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-mt9m114.dts
+index 0f6787ca5e02..f0b3c57451a6 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-mt9m114.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-mt9m114.dts
+@@ -139,7 +139,6 @@ &lpi2c8 {
+ 	pinctrl-names = "default", "sleep";
+ 	pinctrl-0 = <&pinctrl_lpi2c8>;
+ 	pinctrl-1 = <&pinctrl_lpi2c8>;
+-	pinctrl-assert-gpios = <&adp5585gpio 4 GPIO_ACTIVE_HIGH>;
+ 	status = "okay";
+ 
+ 	pca9538: gpio@70 {
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-rm67199.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-rm67199.dts
+index 8a27abb04a85..274574938dc9 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-rm67199.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-rm67199.dts
+@@ -19,7 +19,6 @@ &dsi {
+ 	panel@0 {
+ 		compatible = "raydium,rm67199";
+ 		reg = <0>;
+-		reset-gpio = <&adp5585gpio 6 GPIO_ACTIVE_LOW>;
+ 		dsi-lanes = <4>;
+ 		video-mode = <2>;	/* 0: burst mode
+ 					 * 1: non-burst mode with sync event
+@@ -58,7 +57,6 @@ touchscreen@14 {
+ 		interrupt-parent = <&pcal6524>;
+ 		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
+ 		irq-gpios = <&pcal6524 7 GPIO_ACTIVE_HIGH>;
+-		reset-gpios = <&adp5585gpio 9 GPIO_ACTIVE_HIGH>;
+ 		edge-failling-trigger;
+ 		touchscreen-size-x = <1080>;
+ 		touchscreen-size-y = <1920>;

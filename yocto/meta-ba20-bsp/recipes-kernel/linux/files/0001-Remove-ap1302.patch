@@ -1,0 +1,24 @@
+From 68259fc14aeff52db6e1dae2ec4a2d34e6d0fb83 Mon Sep 17 00:00:00 2001
+From: Kas User <kas@example.com>
+Date: Mon, 5 Jan 2026 20:38:31 +0100
+Subject: [PATCH] Remove ap1302
+
+---
+ arch/arm64/boot/dts/freescale/imx93-11x11-evk-mt9m114.dts | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-mt9m114.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-mt9m114.dts
+index 14e78a22639b..f3ce660a4661 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-mt9m114.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-mt9m114.dts
+@@ -177,10 +177,6 @@ mt9m114_ep: endpoint {
+ 	};
+ };
+ 
+-&ap1302 {
+-	status = "disabled";
+-};
+-
+ &sai3 {
+ 	status = "disabled";
+ };

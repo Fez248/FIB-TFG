@@ -1,0 +1,82 @@
+From 56c85fbc16e80d8df13068174b9215f9dbe95b5a Mon Sep 17 00:00:00 2001
+From: Kas User <kas@example.com>
+Date: Mon, 5 Jan 2026 19:57:54 +0100
+Subject: [PATCH] Remove-unused-audio
+
+---
+ .../dts/freescale/imx93-11x11-evk-aud-hat.dts     | 15 ---------------
+ .../boot/dts/freescale/imx93-11x11-evk-i3c.dts    |  8 --------
+ .../boot/dts/freescale/imx93-11x11-evk-rpmsg.dts  |  8 --------
+ 3 files changed, 31 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-aud-hat.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-aud-hat.dts
+index 8c56b5761f1c..b6d8b9f7d9e5 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-aud-hat.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-aud-hat.dts
+@@ -102,18 +102,6 @@ reg_audio_switch1: regulator-audio-switch1 {
+ 		regulator-always-on;
+ 	};
+ 
+-	reg_audio_pwr: regulator-audio-pwr {
+-		compatible = "regulator-fixed";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_audio_pwr>;
+-		regulator-name = "cs42448-supply";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		gpio = <&gpio2 1 GPIO_ACTIVE_HIGH>;
+-		enable-active-high;
+-		regulator-always-on;
+-	};
+-
+ 	sound-wm8962 {
+ 		status = "disabled";
+ 	};
+@@ -197,9 +185,6 @@ cs42448: cs42448@48 {
+ 		reg = <0x48>;
+ 		clocks = <&clk IMX93_CLK_SAI3_GATE>;
+ 		clock-names = "mclk";
+-		VA-supply = <&reg_audio_pwr>;
+-		VD-supply = <&reg_audio_pwr>;
+-		VLS-supply = <&reg_audio_pwr>;
+ 		VLC-supply = <&reg_audio_switch1>;
+ 		reset-gpio = <&gpio2 25 GPIO_ACTIVE_LOW>;
+ 		status = "okay";
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-i3c.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-i3c.dts
+index e812804a1a19..96286d9758de 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-i3c.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-i3c.dts
+@@ -40,14 +40,6 @@ codec: wm8962@1a {
+ 		compatible = "wlf,wm8962";
+ 		reg = <0x1a 0x00 (I2C_FM | I2C_NO_FILTER_LOW_FREQUENCY)>;
+ 		clocks = <&clk IMX93_CLK_SAI3_GATE>;
+-		DCVDD-supply = <&reg_audio_pwr>;
+-		DBVDD-supply = <&reg_audio_pwr>;
+-		AVDD-supply = <&reg_audio_pwr>;
+-		CPVDD-supply = <&reg_audio_pwr>;
+-		MICVDD-supply = <&reg_audio_pwr>;
+-		PLLVDD-supply = <&reg_audio_pwr>;
+-		SPKVDD1-supply = <&reg_audio_pwr>;
+-		SPKVDD2-supply = <&reg_audio_pwr>;
+ 		gpio-cfg = <
+ 			0x0000 /* 0:Default */
+ 			0x0000 /* 1:Default */
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-rpmsg.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-rpmsg.dts
+index 99139d9b8e20..e1ab34104c61 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-rpmsg.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-rpmsg.dts
+@@ -103,14 +103,6 @@ i2c_rpbus_1: i2c-rpbus-1 {
+ 		codec: wm8962@1a {
+ 			compatible = "wlf,wm8962";
+ 			reg = <0x1a>;
+-			DCVDD-supply = <&reg_audio_pwr>;
+-			DBVDD-supply = <&reg_audio_pwr>;
+-			AVDD-supply = <&reg_audio_pwr>;
+-			CPVDD-supply = <&reg_audio_pwr>;
+-			MICVDD-supply = <&reg_audio_pwr>;
+-			PLLVDD-supply = <&reg_audio_pwr>;
+-			SPKVDD1-supply = <&reg_audio_pwr>;
+-			SPKVDD2-supply = <&reg_audio_pwr>;
+ 			gpio-cfg = <
+ 				0x0000 /* 0:Default */
+ 				0x0000 /* 1:Default */

@@ -1,0 +1,21 @@
+From 425ac0ba29174fccea819f2c07d19f55f581f631 Mon Sep 17 00:00:00 2001
+From: Kas User <kas@example.com>
+Date: Mon, 5 Jan 2026 17:03:58 +0100
+Subject: [PATCH] Remove can2 leftover
+
+---
+ arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+index 161f8b6b1aa4..14b190c5c1cb 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+@@ -272,7 +272,6 @@ &flexcan2 {
+ 	pinctrl-names = "default", "sleep";
+ 	pinctrl-0 = <&pinctrl_flexcan2>;
+ 	pinctrl-1 = <&pinctrl_flexcan2_sleep>;
+-	xceiver-supply = <&reg_can2_stby>;
+ 	status = "disabled";
+ };
+ 
