@@ -1,0 +1,56 @@
+From cba27d4f77973c562e6bb9776f1f88ce14c112e2 Mon Sep 17 00:00:00 2001
+From: Kas User <kas@example.com>
+Date: Thu, 22 Jan 2026 13:25:49 +0100
+Subject: [PATCH] Port-display-to-BA20-no-brightness
+
+---
+ .../imx93-11x11-evk-edt-lvds-panel.dts        | 29 +++++++------------
+ 1 file changed, 11 insertions(+), 18 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-edt-lvds-panel.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-edt-lvds-panel.dts
+index a5a1a88b693e..4462a4098044 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk-edt-lvds-panel.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk-edt-lvds-panel.dts
+@@ -7,24 +7,9 @@
+ 
+ / {
+ 	lvds_backlight: lvds_backlight {
+-		compatible = "pwm-backlight";
+-		pwms = <&adp5585pwm 0 100000 0>;
+-		enable-gpios = <&adp5585gpio 8 GPIO_ACTIVE_HIGH>;
+-		power-supply = <&reg_vdd_12v>;
+-		status = "okay";
+-
+-		brightness-levels = < 0  1  2  3  4  5  6  7  8  9
+-				     10 11 12 13 14 15 16 17 18 19
+-				     20 21 22 23 24 25 26 27 28 29
+-				     30 31 32 33 34 35 36 37 38 39
+-				     40 41 42 43 44 45 46 47 48 49
+-				     50 51 52 53 54 55 56 57 58 59
+-				     60 61 62 63 64 65 66 67 68 69
+-				     70 71 72 73 74 75 76 77 78 79
+-				     80 81 82 83 84 85 86 87 88 89
+-				     90 91 92 93 94 95 96 97 98 99
+-				    100>;
+-		default-brightness-level = <100>;
++		compatible = "gpio-backlight";
++		gpios = <&gpio2 25 GPIO_ACTIVE_HIGH>;	
++		default-on;
+ 	};
+ 
+ 	lvds_panel {
+@@ -39,6 +24,14 @@ panel_lvds_in: endpoint {
+ 	};
+ };
+ 
++&gpio2 {
++	lvds_bl_pwm_hog {
++		gpio-hog;
++		gpios = <22 GPIO_ACTIVE_HIGH>;
++		output-high;
++	};
++};
++
+ &adv7535 {
+ 	status = "disabled";
+ };

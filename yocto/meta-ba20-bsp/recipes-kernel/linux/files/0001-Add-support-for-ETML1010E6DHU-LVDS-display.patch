@@ -1,0 +1,78 @@
+From 66af346f304f1675bfd82e24b62e49966c684f81 Mon Sep 17 00:00:00 2001
+From: Kas User <kas@example.com>
+Date: Thu, 2 May 2024 11:51:31 +0000
+Subject: [PATCH] Add support for ETML1010E6DHU LVDS display
+
+---
+ .../bindings/display/panel/panel-simple.yaml  |  2 ++
+ drivers/gpu/drm/panel/panel-simple.c          | 34 +++++++++++++++++++
+ 2 files changed, 36 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
+index d5aa3a86fd70..52480a2435f2 100644
+--- a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
++++ b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
+@@ -145,6 +145,8 @@ properties:
+       - edt,etm0700g0edh6
+         # Emerging Display Technology Corp. LVDS WSVGA TFT Display with capacitive touch
+       - edt,etml0700y5dha
++        # Emerging Display Technology Corp. 1024x600 TFT Display with capacitive touch
++      - edt,etml1010e6dhu
+         # Emerging Display Technology Corp. 5.7" VGA TFT LCD panel with
+         # capacitive touch
+       - edt,etmv570g2dhu
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index b73669808347..ba58c6564408 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1809,6 +1809,37 @@ static const struct panel_desc edt_etml0700y5dha = {
+ 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+ };
+ 
++static const struct display_timing edt_etml1010e6dhu_timing = {
++	.pixelclock = { 69922000, 71000000, 72293000 },
++	.hactive = { 1024, 1024, 1024 },
++	.hfront_porch = { 160, 160, 160 },
++	.hback_porch = { 160, 160, 160 },
++	.hsync_len = { 40, 40, 40 },
++	.vactive = { 600, 600, 600 },
++	.vfront_porch = { 13, 13, 13},
++	.vback_porch = { 23, 23, 23 },
++	.vsync_len = { 10, 10, 10 },
++};
++
++static const struct panel_desc edt_etml1010e6dhu = {
++	.timings = &edt_etml1010e6dhu_timing,
++	.num_timings = 1,
++	.bpc = 8,
++	.size = {
++		.width = 224,
++		.height = 126,
++	},
++        .delay = {
++		.prepare = 9,
++		.enable = 300,
++		.unprepare = 300,
++		.disable = 560,
++	},
++	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
++        .bus_flags = DRM_BUS_FLAG_DE_HIGH,
++	.connector_type = DRM_MODE_CONNECTOR_LVDS,
++};
++
+ static const struct drm_display_mode edt_etmv570g2dhu_mode = {
+ 	.clock = 25175,
+ 	.hdisplay = 640,
+@@ -4164,6 +4195,9 @@ static const struct of_device_id platform_of_match[] = {
+ 	}, {
+ 		.compatible = "edt,etml0700y5dha",
+ 		.data = &edt_etml0700y5dha,
++	}, {
++		.compatible = "edt,etml1010e6dhu",
++		.data = &edt_etml1010e6dhu,
+ 	}, {
+ 		.compatible = "edt,etmv570g2dhu",
+ 		.data = &edt_etmv570g2dhu,
+-- 
+2.39.2
+

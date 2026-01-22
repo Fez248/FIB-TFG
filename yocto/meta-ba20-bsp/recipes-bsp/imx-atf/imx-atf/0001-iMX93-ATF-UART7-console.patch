@@ -1,0 +1,22 @@
+From f1ffb97d981b25c917aa491c6a64fe23362e21c9 Mon Sep 17 00:00:00 2001
+From: Kas User <kas@example.com>
+Date: Sat, 6 Dec 2025 23:30:56 +0100
+Subject: [PATCH] iMX93-ATF-UART7-console
+
+---
+ plat/imx/imx93/include/platform_def.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/plat/imx/imx93/include/platform_def.h b/plat/imx/imx93/include/platform_def.h
+index 82e904b2c..f7c7d16e2 100644
+--- a/plat/imx/imx93/include/platform_def.h
++++ b/plat/imx/imx93/include/platform_def.h
+@@ -53,7 +53,7 @@
+ #define MAX_MMAP_REGIONS		16
+ #endif
+ 
+-#define IMX_LPUART_BASE			U(0x44380000)
++#define IMX_LPUART_BASE			U(0x42690000)
+ #define IMX_BOOT_UART_CLK_IN_HZ		U(24000000) /* Select 24MHz oscillator */
+ #define IMX_CONSOLE_BAUDRATE		115200
+ 

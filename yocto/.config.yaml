@@ -1,0 +1,92 @@
+header:
+  version: 14
+
+target: fides-ba20-image
+distro: fsl-imx-fides
+machine: imx93evk
+
+repos:
+  poky:
+    url: "https://git.yoctoproject.org/git/poky"
+    commit: f16cffd030d21d12dd57bb95cfc310bda41f8a1f
+    layers:
+      meta:
+      meta-poky:
+      meta-yocto-bsp:
+
+  meta-ampliphy:
+    url: "https://git.phytec.de/meta-ampliphy/"
+    commit: adeb2e94e58b7d67f39f9ebafa68a93c186fb534
+    branch: scarthgap
+
+  meta-phytec:
+    url: "https://git.phytec.de/meta-phytec/"
+    commit: 43c5738bf3d5803d980397642329af5ab8449d54
+    branch: scarthgap
+
+  meta-rauc:
+    url: "https://github.com/rauc/meta-rauc"
+    commit: a0f4a8b9986954239850b9d4256c003c91e6b931
+    branch: scarthgap
+
+  meta-freescale:
+    url: "https://github.com/Freescale/meta-freescale.git"
+    commit: 7d83a350d8b28498321a481a2a1c51bb4afb48e9
+    branch: scarthgap
+
+  meta-freescale-distro:
+    url: "https://github.com/Freescale/meta-freescale-distro"
+    commit: b9d6a5d9931922558046d230c1f5f4ef6ee72345
+    branch: scarthgap
+
+  meta-ba20-bsp:
+    path: "./meta-ba20-bsp"
+
+  meta-openembedded:
+    url: "https://git.openembedded.org/meta-openembedded"
+    commit: 15e18246dd0c0585cd1515a0be8ee5e2016d1329
+    layers:
+      meta-oe:
+      meta-multimedia:
+      meta-networking:
+      meta-filesystems:
+
+  meta-python:
+    url: "https://git.openembedded.org/meta-openembedded"
+    commit: 15e18246dd0c0585cd1515a0be8ee5e2016d1329
+    layers:
+      meta-python:
+  
+  meta-qt6:
+    url: "git://code.qt.io/yocto/meta-qt6.git"
+    commit: 1a7a776c9f79c6b0500c64b78841aac5438f33f2
+
+  meta-arm:
+    url: "https://git.yoctoproject.org/meta-arm"
+    commit: a81c19915b5b9e71ed394032e9a50fd06919e1cd
+    layers:
+      meta-arm:
+      meta-arm-toolchain:
+
+  meta-imx:
+    url: "https://github.com/nxp-imx/meta-imx.git"
+    commit: e1ec1a20d573e3913f4ad90fa36546ed2bc87715
+    layers:
+      meta-imx-bsp:
+      meta-imx-sdk:
+
+local_conf_header:
+  meta-fides_test: |
+    ACCEPT_FSL_EULA = "1"
+    INHERIT:remove = "spdx"
+    SPDX_DISABLE = "1"
+    INHERIT:remove:class-target = "spdx create-spdx"
+    INHERIT:remove:class-native = "spdx create-spdx"
+    INHERIT:remove:class-cross = "spdx create-spdx"
+    LICENSE_FLAGS_ACCEPTED = "commercial"
+    BB_NUMBER_THREADS = "3"
+    PARALLEL_MAKE = "-j 3"
+    USE_GOLD_LINKER = "0"
+    BINUTILS_BUILD_GOLD = "no"
+    APPEND += " console=ttyLP7,115200 root=/dev/mmcblk0p2 rw"
+
