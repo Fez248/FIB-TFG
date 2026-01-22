@@ -1,0 +1,60 @@
+stages:
+  - yocto
+  - sdk
+
+variables:
+  DL_DIR: "$CI_PROJECT_DIR/build/downloads"
+  SSTATE_DIR: "$CI_PROJECT_DIR/build/sstate-cache"
+
+build_yocto:
+  stage: yocto
+  image: yocto
+  timeout: 8h
+
+  script:
+    - kas build .config.yaml
+
+  artifacts:
+    paths:
+      - build/tmp/deploy/images/
+    expire_in: 1 week
+
+  cache:
+    key: yocto-${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+    paths:
+      - build/downloads/
+      - build/sstate-cache/
+
+  tags:
+    - yocto
+  retry: 1
+
+
+build_sdk:
+  stage: sdk
+  image: QT-SDK
+  timeout: 4h
+
+  needs:
+    - job: build_yocto
+      artifacts: false   # SDK uses sstate, not images
+
+  script:
+    - bitbake fides-ba20-image -c populate_sdk
+
+  artifacts:
+    paths:
+      - build/tmp/deploy/sdk/
+    expire_in: 1 week
+
+  cache:
+    key: yocto-${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+    paths:
+      - build/downloads/
+      - build/sstate-cache/
+
+  tags:
+    - sdk
+  retry: 1
+
+  when: manual

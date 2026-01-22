@@ -1,0 +1,22 @@
+stages:
+  - build
+
+build-yocto:
+  stage: build
+  image: yocto
+  timeout: 8h
+
+  script:
+    - mkdir $CI_PROJECT_DIR/build
+    - cd $CI_PROJECT_DIR/build
+    - qmake ../qt-swupdate.pro
+    - make
+
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/build/
+    expire_in: 1 week
+
+  tags:
+    - qt
+  retry: 1
