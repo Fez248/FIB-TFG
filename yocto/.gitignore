@@ -2,6 +2,5 @@ build/
 poky/
 meta-*/
 *wic
-images/
 
 !meta-ba20-bsp/
